@@ -40,6 +40,7 @@ class Post(Base):
     user_id = Column (Integer, ForeignKey('users.id'))
     image_url = Column (String(150), nullable = False)
     caption = Column (String(300), nullable = True)
+    location = Column (String(300), nullable = True)
     post_time = Column(DateTime, default = datetime.datetime.utcnow)
     user = relationship('User' ,back_populates = 'post')
     comment = relationship ('Comment', back_populates = 'user')
@@ -50,6 +51,7 @@ class Post(Base):
             'user_id' : self.user_id,
             'image_url' : self.image_url,
             'caption': self. caption,
+            'location' : self.location,
             'post_time': self.post_time
         }
     
@@ -59,7 +61,7 @@ class Comment (Base):
     id = Column (Integer , primary_key = True)
     user_id = Column (Integer, ForeignKey('users.id'))
     post_id = Column (Integer, ForeignKey('posts.id'))
-    description_comment = Column (String (250), nullable = False)
+    text_comment = Column (String (250), nullable = False)
     comment_time = Column (DateTime , default = datetime.datetime.utcnow)
     user = relationship ('User')
     post = relationship ('Post', back_populates = 'comment')
@@ -69,7 +71,7 @@ class Comment (Base):
         return{
             'user_id': self.user_id,
             'post_id': self.post_id,
-            'description_comment': self.description_comment,
+            'text_comment': self.text_comment,
             'comment_time': self.comment_time
         }
 

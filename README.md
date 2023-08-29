@@ -1,48 +1,69 @@
-<!--hide-->
-# Create the database model for Instagram
-<!--endhide-->
 
-**Important**: To do this activity you need to `fork` [this repo](https://github.com/breatheco-de/exercise-instagram-data-modeling) into your **Github** account and then open the forked repo on Gitpod.
-
-Inside he `src/models.py` file you will find a couple of classes describing an example database.
-
-Here is a 4min video explaining what UML is: [https://www.youtube.com/watch?v=UI6lqHOVHic](https://www.youtube.com/watch?v=UI6lqHOVHic)
-
-The `diagram.png` file generates a database chart based on the classes that you will be creating. Such charts in Database Management are referred to as ERDs (Entity Relatonship Diagrams). 
-
-Please watch these two short videos explaining ERDs: 
-[https://www.youtube.com/watch?v=QpdhBUYk7Kk&t=4s](https://www.youtube.com/watch?v=QpdhBUYk7Kk&t=4s)
-[https://www.youtube.com/watch?v=-CuY5ADwn24&t=738s](https://www.youtube.com/watch?v=-CuY5ADwn24&t=738s)
-
-You will have to create the Entity Relationship Diagram for Instagram's Database - a very similar diagram to this one:
-
-![Instagram Diagram](https://github.com/breatheco-de/exercise-instagram-data-modeling/blob/master/assets/example.png?raw=true)
-[Click to open diagram](https://app.quickdatabasediagrams.com/#/d/LxNXQZ)
-
-> 🔥 You can use this FREE tool to practice your diagram for the first time: https://app.quickdatabasediagrams.com/#/d/
+# This is my diagram code for the database model of Instagram 
 
 
-## 💻 Installation
+## User
+-----------------------
+id integer PK
+username string 
+email string
+password Integer
+full_name string
+bio string
+profile_picture string
+post string
+followers FK >- Follower.id
+following Fk >- Following.id
 
-1. Get inside the environment `$ pipenv shell`
 
-2. Install all dependencies `$ pipenv install`
+Post
+---------------------
+id integer PK
+user.id integer
+image_url string
+caption string
+upload_time DateTime
+location string
+users FK >- User.id
+likes FK >- Like.id
 
-3. Generate the diagram as many times as you need `$ python src/models.py`
 
-4. Open the file `diagram.png` to check out your ERD diagram!
+Follower
+------------------
+id integer PK
+user_id integer FK >- User.id
+count_followers Integer
+follower_id integer FK >- User.id
+follower_time DateTime
+
+Following
+------------------
+id integer PK
+user_id integer FK >- User.id
+count_followings Integer
+following_id integer FK >- User.id
+following_time DateTime
 
 
-## 📝Instructions
 
-Your job is to update the `src/models.py` file with the code needed to replicate Instagram's data model.
+Like
+---------------------
+id integer PK
+user.id integer FK
+post.id integer FK
+like_time DateTime
+count_likes Integer
+user FK >- User.id
+post FK >- Post.id
 
-The project is using the SQLAlchemy Python library to generate the database.
 
-- What tables do you think Instagram might have on its database: E.g: Post, User, etc.?
-- What properties should go inside the user? or inside the Post table?
-- Please add at least 4 models with all of its properties.
-- Refresh the `diagram.png` file at the end by running `$ python src/models.py` on the console.
-
-This and many other projects are built by students as part of the 4Geeks Academy [Coding Bootcamp](https://4geeksacademy.com/us/coding-bootcamp) by [Alejandro Sanchez](https://twitter.com/alesanchezr) and many other contributors. Find out more about our [Full Stack Developer Course](https://4geeksacademy.com/us/coding-bootcamps/part-time-full-stack-developer), and [Data Science Bootcamp](https://4geeksacademy.com/us/coding-bootcamps/datascience-machine-learning).
-
+Comment
+------------------------
+id integer PK
+user.id integer
+post.id integer
+text_comment string
+comment_time DateTime
+users FK >- User.id
+posts FK >- Post.id
+likes FK >- Like.id

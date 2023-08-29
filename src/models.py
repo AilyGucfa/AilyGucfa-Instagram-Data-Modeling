@@ -20,6 +20,8 @@ class User(Base):
     bio  = Column (String(300),nullable = True)
     profile_picture = Column(String)
     post = relationship ('Post', back_populates = 'user')
+    follower = relationship ('Follower' , back_populates = 'follower' , lazy ='dynamic')
+    following = relationship ('Following', back_populates = 'following' , lazy = 'dynamic')
 
     def serialize (self):
         return{
@@ -92,7 +94,35 @@ class Like (Base):
             'like_time' : self.like_time
         }
 
+class Follower (Base) :
+    __tablename__ = 'followers'
+    id = Column (Integer , primary_key = True)
+    user_id = Column (Integer , ForeignKey ('users.id'))
+    follower_time = Column (DateTime , default = datetime.datetime.utcnow)
+    count_followers = Column (Integer)
+    user = relationship ('User' , back_populates = 'follower')
 
+    def serialize (self):
+        return{
+            'user_id': self.user_id,
+            'followe_time' : self.follower_time,
+            'count_followers' : self.count_followers
+        }
+
+class Following (Base):
+    __tablename__ ='followings'
+    id = Column (Integer, primary_key = True)
+    user_id = Column (Integer, ForeignKey ('users.id'))
+    count_following = Column (Integer)
+    following_time = Column (DateTime, default = datetime.datetime.utcnow)
+    user = relationship ('User' , back_populates = 'following')
+
+    def serialize (self):
+        return{
+            'user_id' : self.user_id,
+            'count_following' : self.count_following,
+            'following_time' : self. following_time
+        }
 
 ## Draw from SQLAlchemy base
 try:
